@@ -1261,7 +1261,7 @@ public class Top100 {
     List<TreeNode> list = new ArrayList<>();
     preorder(root,list);
     int n = list.size();
-    for(int i = 0; i<n; i++){
+    for(int i = 1; i<n; i++){
       TreeNode pre = list.get(i-1);
       TreeNode cur = list.get(i);
       pre.left = null;
@@ -1291,8 +1291,8 @@ public class Top100 {
       single = single^n;
     }
     return single;
-
   }
+
   /****139. 单词拆分
    * 动态规划：dp[i]表示字符串s中第i-1结尾的字符串是否满足可被wordDict划分
    * dp[i] = dp[j] && check(s[j, i-1])
@@ -3000,12 +3000,12 @@ public class Top100 {
 
   /***28. 实现 strStr()
    * *****/
-  public int strStr(String haystack, String needle) {
-    if(haystack.length() == 0 || needle.length() == 0){
-      return 0;
-    }
-
-  }
+//  public int strStr(String haystack, String needle) {
+//    if(haystack.length() == 0 || needle.length() == 0){
+//      return 0;
+//    }
+//
+//  }
 
 
 

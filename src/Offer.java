@@ -55,10 +55,10 @@ public class Offer {
         if(nums[i] == nums[nums[i]]){ //经过转换后，每个索引i对应的元素应该是i,如果此时相同后，说明num[i]这个元素在i位置和num[i]位置两个地方出现
           return nums[i];
         }
+        //交换num[i] 和 i 索引的数
         temp = nums[i];
-        nums[nums[i]] = nums[temp];
+        nums[i] = nums[temp];
         nums[temp] = temp;
-
       }
     }
     return -1;
@@ -482,7 +482,7 @@ public class Offer {
   }
 
   /****面试题12 矩阵中的路径
-   * 回溯
+   * 回溯 todo
    * 注意index ++ 和index+1
    * 回溯终止的条件是，把字符串遍历完，看char 是否相等
    * *****/
@@ -534,6 +534,7 @@ public class Offer {
   }
 
   /***面试题13 机器人的运动范围
+   * TODO
    * ****/
   public int movingCount(int m, int n, int k){
     if(m == 0 && n == 0){
@@ -915,7 +916,7 @@ public class Offer {
       ListNode slow = head;
       int index = 0;
       while(k-- >0){  //判断k值的取值，提高代码的鲁棒性
-        if(fast.next != null){
+        if(fast != null){
           fast = fast.next;
         } else {
           return null;
@@ -999,16 +1000,34 @@ public class Offer {
     ListNode res = null;
     if(l1.val >= l2.val){
        res = l2;
-      res.next = mergeTwoLists(l1, l2.next);
+       res.next = mergeTwoLists(l1, l2.next);
     } else {
-      res = l1;
-      res.next = mergeTwoLists(l1.next, l2);
+       res = l1;
+       res.next = mergeTwoLists(l1.next, l2);
     }
     return res;
+  }
 
+  public ListNode mergeTwoLists2(ListNode l1, ListNode l2){
+    ListNode prehead = new ListNode(-1);
+    ListNode head = prehead;
+    while (l1 != null && l2 != null){
+      if(l1.val > l2.val){
+        head.next = l2;
+        l2 = l2.next;
+      } else {
+        head.next = l1;
+        l1 = l1.next;
+      }
+      head = head.next;
+    }
+    head.next = l1 == null?l2:l1;
+    return prehead.next;
   }
 
   /****面试题26 树的子结构
+   * 如果两个节点值相同的话，再去判断两个节点的左右节点是否分别相同
+   * 否则的话去看A树的左右节点是否和B节点相同
    * *****/
   public boolean isSubStructure(TreeNode A,  TreeNode B){
     boolean res = false;
@@ -1160,7 +1179,8 @@ public class Offer {
    }
 
    /****31 栈的压入 弹出序列
-    * 按照入栈序列进行push，每次push时判断栈顶元素是否和出栈序列的元素相等，再进行出栈和出栈序列的循环
+    * 按照入栈序列进行push，每次push时判断栈顶元素是否和出栈序列的元素相等，再进行出栈和出栈序列的循环，
+    * 如果是出栈队列的话，那就刚好弹出完
     * *****/
    public boolean validateStackSequences(int[] pushed, int[] popped) {
      if(popped.length == 0 && pushed.length == 0){
@@ -1195,7 +1215,6 @@ public class Offer {
      while (deque.size() != 0){
        TreeNode node = deque.poll();
        res.add(node.val);
-       deque.poll();
        if(node.left != null){
          deque.add(node.left);
        }
@@ -1325,6 +1344,7 @@ public class Offer {
 
   /***33 二叉搜索数的后序遍历序列
    * 递归，注意数组的开始索引和结束索引
+   * 先看整个树是否满足二叉搜索树，再看左子树和右子树是否满足
    * *****/
   public boolean verifyPostorder(int[] postorder) {
     if(postorder == null || postorder.length == 0){
@@ -1340,13 +1360,6 @@ public class Offer {
     }
     int root = postorder[end];
     int rightIndex = start;
-//    for(int i = start; i<= end; i++){
-//      if(postorder[i] > root){
-//        rightIndex = i;
-//        break;
-//      }
-//
-//    }
     while(rightIndex < end && postorder[rightIndex] < root){
       rightIndex++;
     }
@@ -1364,6 +1377,7 @@ public class Offer {
   /****34 二叉树中和为某一值的路径-------------------------------important
    * 二叉树搜素问题：回溯
    * 从根节点开始的遍历，先序遍历，路径中的节点
+   * TODO
    * *****/
   List<List<Integer>> res = new ArrayList<>();
   List<Integer> path = new ArrayList<>();
@@ -1381,11 +1395,12 @@ public class Offer {
     }
     dfs34(root.left, sum);
     dfs34(root.right, sum);
-    path.remove(path.size() -1); //进行回溯
+    path.remove(path.size() -1); //进行回溯,把最后一个去除，
 
   }
 
   /****35 复杂链表的复制
+   * TODO
    * *****/
   class Node{
     int val;
@@ -1438,6 +1453,7 @@ public class Offer {
   }
 
   /****36 二叉搜索树与双向链表 --------------------------------
+   * TODO
    * 难点在于递归
    * ******/
   class Node1 {
@@ -2055,8 +2071,9 @@ public class Offer {
       n ^= num;
     }
     int mask = 1; // 表示的位号：两个不同的数在这个位置上不同时为0 或者为1，
-    // 找到结果中为1 的最低位
-    while((n & mask) == 0){
+    // 找到结果中为1的最低位
+    // 为什么要找到为1的最低位呢，为了方便，去结果为1的最低位
+    while((n & mask) == 0){ //
       mask <<= 1;
     }
     for(int num: nums){
@@ -2625,18 +2642,13 @@ public class Offer {
 
   }
 
-
-
-
-
-
-
-
-
     public static void main(String[] args){
      System.out.println("hello offer");
      Offer offer = new Offer();
-     offer.lengthOfLongestSubstring2("pwwkew");
+     //offer.lengthOfLongestSubstring2("pwwkew");
+
+     int[] arr = new int[]{1,1,5,5,2,4};
+     int[] res = offer.singleNumbers(arr);
 
   }
 }

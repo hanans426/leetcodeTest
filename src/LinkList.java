@@ -13,7 +13,7 @@ public class LinkList {
    * 这样就能控制访问A B 两个链表的指针同时访问到交点
    * ******/
 
-  public class ListNode {
+  public static class ListNode {
      int val;
       ListNode next;
       ListNode(int x) {
@@ -58,10 +58,43 @@ public class LinkList {
     if(head == null || head.next == null){
       return  head;
     }
-    ListNode cur = reverseList(head.next);
+    ListNode cur = reverseList1(head.next);
     head.next.next = head;
     head.next = null;
     return cur;
+  }
+
+  //逆序打印链表的倒数n个节点
+  public static int reversePrint(ListNode root, int n){
+    if (root == null){
+      return 0;
+    } //递归终止条件
+
+    if(root.next == null){ //递归开始条件
+      System.out.println(root.val);
+      return 1;
+    }
+    int cnt = reversePrint(root.next, n);
+    if(cnt < n){
+      System.out.println(root.val);
+      return cnt + 1;
+    } else {
+      return cnt;
+    }
+  }
+
+  public static void main(String[] args) {
+    ListNode head = new ListNode(1);
+    ListNode node1 = new ListNode(2);
+    ListNode node2 = new ListNode(3);
+    ListNode node3 = new ListNode(4);
+    ListNode node4 = new ListNode(5);
+    head.next = node1;
+    node1.next = node2;
+    node2.next = node3;
+    node3.next = node4;
+    reversePrint(head, 3);
+
   }
 
   /****21. 合并两个有序链表
